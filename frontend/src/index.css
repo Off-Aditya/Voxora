@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --paper: #f7f8fa;
+  --sidebar: #fff;
+  --surface: #fff;
+  --surface-alt: #f4f6f8;
+  --line: #e8ebef;
+  --ink: #20252d;
+  --muted: #7c8491;
+  --body: #4b5563;
+  --accent: #6c63d9;
+  --accent-soft: #f0efff;
+  --accent-strong: #5148c8;
+  --green: #249b78;
+  --shadow: 0 8px 28px rgba(24, 34, 52, 0.055);
+}
+.dark {
+  color-scheme: dark;
+  --paper: #151820;
+  --sidebar: #1b1f29;
+  --surface: #202530;
+  --surface-alt: #282e3a;
+  --line: #333b49;
+  --ink: #f1f3f8;
+  --muted: #9ba4b2;
+  --body: #c5ccd6;
+  --accent: #9a91ff;
+  --accent-soft: #302e4b;
+  --accent-strong: #b4adff;
+  --green: #57c8a4;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: "DM Sans", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+::selection {
+  background: #dfddff;
+  color: #252047;
+}
+.scrollbar-soft::-webkit-scrollbar {
+  width: 7px;
+}
+.scrollbar-soft::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: var(--line);
+}
+.prose-notes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+}
+/* Voxora's Fireflies-inspired product system */
+.bg-paper {
+  background: var(--paper) !important;
+}
+.bg-sidebar {
+  background: var(--sidebar) !important;
+}
+.bg-surface {
+  background: var(--surface) !important;
+}
+.bg-surface-alt {
+  background: var(--surface-alt) !important;
+}
+.border-line {
+  border-color: var(--line) !important;
+}
+.text-ink {
+  color: var(--ink) !important;
+}
+.text-muted {
+  color: var(--muted) !important;
+}
+.text-body {
+  color: var(--body) !important;
+}
+.text-sage,
+.bg-sage {
+  color: #fff !important;
+  background: var(--accent) !important;
+}
+.text-sage-deep {
+  color: var(--accent-strong) !important;
+}
+.bg-sage-pale {
+  background: var(--accent-soft) !important;
+}
+.hover\:bg-sage-deep:hover {
+  background: var(--accent-strong) !important;
+}
+.paper-grain {
+  background-image: none !important;
+}
+a {
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+button {
+  transition: all 0.18s ease;
+}

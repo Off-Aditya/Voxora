@@ -1,0 +1,61 @@
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
+from uuid import uuid4
+
+CHROMA_DIR = "./vector"
+COLLECTION_NAME = "meeting_transcript"
+EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
+
+
+def get_embeddings():
+    return HuggingFaceEmbeddings(
+        model_name=EMBEDDING_MODEL,
+        model_kwargs={"device": "cpu"},
+        encode_kwargs={"normalize_embeddings": True},
+    )
+
+
+def build_vector_store(transcript: str) -> Chroma:
+    print("Building Vector Store...")
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=500,
+        chunk_overlap=50,
+    )
+    chunks = splitter.split_text(transcript)
+
+    docs = [
+        Document(page_content=chunk, metadata={"chunk_index": i})
+        for i, chunk in enumerate(chunks)
+    ]
+
+    embeddings = get_embeddings()
+    vector_store = Chroma.from_documents(
+        documents=docs,
+        embedding=embeddings,
+        # The API keeps RAG chains in memory. Give each chain its own transient
+        # collection so questions can never retrieve chunks from another meeting.
+        collection_name=f"meeting_{uuid4().hex}",
+    )
+
+    return vector_store
+
+
+def load_vector_store() -> Chroma:
+    embeddings = get_embeddings()
+    vector_store = Chroma(
+        collection_name=COLLECTION_NAME,
+        embedding_function=embeddings,
+        persist_directory=CHROMA_DIR,
+    )
+
+    return vector_store
+
+
+def get_retriever(vector_store: Chroma, k: int = 4):
+    return vector_store.as_retriever(
+        search_type="similarity",
+        search_kwargs={"k": k},
+    )
